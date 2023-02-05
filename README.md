@@ -11,7 +11,7 @@
 
 安装 `nodejs`
 
-clone 本项目 `git clone --depth=1 git@github.com:zlyuancn/nav.git && cd nav`
+clone 本项目 `git clone --depth=1 https://github.com/zlyuancn/nav.git && cd nav`
 
 安装依赖包 `npm install`
 
@@ -19,12 +19,24 @@ clone 本项目 `git clone --depth=1 git@github.com:zlyuancn/nav.git && cd nav`
 
 编译 `npm run dist`
 
+# 通过 docker 构建
+
+安装 `docker`
+
+clone 本项目 `git clone --depth=1 https://github.com/zlyuancn/nav.git && cd nav`
+
+构建 `docker build -t zlyuan/nav .`
+
+运行 `docker run --name=nav -p 8080:8080 zlyuan/nav`
+
+通过 `docker-compose` 运行 `docker compose up -d`
+
 # 配置
 
 配置文件在 `dist/configs` 目录下.
 
-[tags.yaml](./public/configs/tags.yaml) 用于配置右上角的标签组, 它控制点击工具时的跳转形式
-[groups.yaml](dist/configs/groups.yaml) 用于配置工具组和其工具列表
-[main.yaml](./public/configs/main.yaml) 用于配置 logo 和背景图等
++ [tags.yaml](./public/configs/tags.yaml) 用于配置右上角的标签组, 它控制点击工具时的跳转形式
++ [groups.yaml](./public/configs/groups.yaml) 用于配置工具组和其工具列表
++ [main.yaml](./public/configs/main.yaml) 用于配置 logo 和背景图等
 
 
