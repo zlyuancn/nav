@@ -4,9 +4,11 @@ import type { SkipType } from '@/client/loadConfig'
 import { useConfig } from '@/stores/config'
 import Tool from './tool.vue'
 import type { ElTable } from 'element-plus';
+import { useSelectTag } from '@/stores/selectTag'
 
 const localConfig = LoadLocalConfig()
 const config = useConfig();
+const selectTag = useSelectTag();
 const activeNames = ref(localConfig.value?.groups?.activeNames)
 const singleTableRef = ref<InstanceType<typeof ElTable>>() // 选择某个group
 
@@ -48,7 +50,7 @@ function init() {
 function getHref(skips: Array<SkipType>): SkipType | null {
     for (let i in skips) {
         let skip = skips[i]
-        if (skip.tagKey == config.selectTagKey) {
+        if (skip.tagKey == selectTag.tag?.tagKey) {
             return skip
         }
     }

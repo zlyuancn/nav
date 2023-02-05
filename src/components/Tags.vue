@@ -1,25 +1,39 @@
 <script setup lang="ts">
 import ThemeModelChange from "./ThemeModelChange.vue"
 import { useConfig } from '@/stores/config'
+import { useSelectTag } from '@/stores/selectTag'
 import { LoadLocalConfig } from '@/client/loadLocalConfig'
+import type { Tag } from "@/client/loadConfig";
 
 const localConfig = LoadLocalConfig()
 
 const radio = ref(localConfig.value?.tags?.selectTagKey) // 选择tag
 
 const config = useConfig();
+const selectTag = useSelectTag();
 // 允许的tagKey
 const allowTagKey = new Map();
 
 init()
 
-function changeTag(tagKey: string) {
-    config.selectTagKey = tagKey
-    localConfig.value.tags = { selectTagKey: tagKey }
+function changeTag(tag: Tag) {
+    selectTag.tag = tag
+    localConfig.value.tags = { selectTagKey: tag.tagKey }
 }
 
 function init() {
-    config.selectTagKey = localConfig.value?.tags?.selectTagKey // 回写
+    // 设为之前选择的tag
+    let selectTagKey = localConfig.value?.tags?.selectTagKey
+    if (selectTagKey){
+        for(let i in config.tags){
+            let tag = config.tags[i]
+            if (tag.tagKey == selectTagKey){
+                selectTag.tag = tag
+                break
+            }
+        }
+    }
+
     if (config?.groups) {
         Object.values(config?.groups).map(group => {
             group?.tools?.map(tool => {
@@ -37,7 +51,7 @@ function init() {
             let tag = config.tags[i]
             if (getAllow(tag.tagKey)) {
                 radio.value = tag.tagKey
-                changeTag(tag.tagKey)
+                changeTag(tag)
                 break
             }
         }
@@ -59,7 +73,7 @@ function getAllow(tagKey: string): boolean {
         <el-radio-group size="small" v-model="radio">
             <el-space>
                 <div>
-                    <el-radio-button v-for="tag in config.tags" :key="tag.tagKey" @change="changeTag(tag.tagKey)"
+                    <el-radio-button v-for="tag in config.tags" :key="tag.tagKey" @change="changeTag(tag)"
                         :label="tag.tagKey" :disabled="!getAllow(tag.tagKey)">{{ tag.title }}</el-radio-button>
                 </div>
 

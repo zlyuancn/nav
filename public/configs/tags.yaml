@@ -6,9 +6,12 @@
 - title: 跳转地址1
   # 一个唯一标记, 用于确认跳转时选择哪个跳转项
   tagKey: key1
+  # 当工具不可用时, 过滤掉该工具
+  filterInvalid: false
 
 - title: 跳转地址2
   tagKey: key2
+  filterInvalid: true
 
 - title: 跳转地址3
   tagKey: key3

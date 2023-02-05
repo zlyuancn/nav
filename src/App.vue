@@ -47,13 +47,11 @@ function setTitleAndFavicon(data: { title: string, icon: string }) {
 
   let favicon: any = document.querySelector('link[rel="icon"]')
   if (favicon) {
-    console.info(favicon)
     favicon.href = data.icon;
     return
   }
 
   favicon = document.createElement('link')
-  console.info(favicon)
   favicon.rel = 'icon';
   favicon.href = data.icon;
   document.head.appendChild(favicon)

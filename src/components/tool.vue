@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { SkipType, Tool } from '@/client/loadConfig'
-import { useConfig } from '@/stores/config'
+import { useSelectTag } from '@/stores/selectTag'
 
-let config = useConfig();
+const selectTag = useSelectTag();
 
 const props = defineProps<{
     tool: Tool
@@ -11,7 +11,7 @@ const props = defineProps<{
 function getHref(skips: Array<SkipType>): SkipType | null {
     for (let i in skips) {
         let skip = skips[i]
-        if (skip.tagKey == config.selectTagKey) {
+        if (skip.tagKey == selectTag.tag?.tagKey) {
             return skip
         }
     }

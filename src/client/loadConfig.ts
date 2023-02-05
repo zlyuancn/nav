@@ -39,13 +39,16 @@ export async function loadMainConfig(): Promise<MainConfig> {
     return a
 }
 
-// 标签
-export type TagsConfig = Array<{
+export interface Tag{
     // 显示文本
     title: string;
     // 一个唯一标记, 用于确认跳转时选择哪个跳转项
     tagKey: string;
-}>
+    // 当工具不可用时, 过滤掉该工具
+    filterInvalid: boolean
+}
+// 标签
+export type TagsConfig = Array<Tag>
 
 export async function loadTagsConfig(): Promise<TagsConfig> {
     let a: TagsConfig = Object.create({});
