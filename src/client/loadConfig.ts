@@ -2,6 +2,10 @@ import { loadConfigData, EncodeType } from './loadData'
 
 // 主要配置
 export interface MainConfig {
+    // 标题
+    title: string,
+    // icon
+    icon: string,
     // logo
     logo: {
         // 图片uri

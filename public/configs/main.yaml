@@ -1,4 +1,10 @@
 
+# 浏览器标题
+title: 我的导航
+
+# 浏览器图标
+icon: 
+
 logo:
   # 图片uri
   icon: /icons/logo.png

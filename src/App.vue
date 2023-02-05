@@ -35,13 +35,33 @@ function initConfig() {
 
     localConfig.value.background = config.main.background; // 储存背景配置
     setBackground(config.main.background) // 设置背景图
+    setTitleAndFavicon(config.main) // 设置标题和图标
     loadOk.value = true; // 标记加载完成
   })
 }
 
+// 设置标题和图标
+function setTitleAndFavicon(data: { title: string, icon: string }) {
+  document.title = data.title; // 设置标题
+  if (!data.icon) return;
+
+  let favicon: any = document.querySelector('link[rel="icon"]')
+  if (favicon) {
+    console.info(favicon)
+    favicon.href = data.icon;
+    return
+  }
+
+  favicon = document.createElement('link')
+  console.info(favicon)
+  favicon.rel = 'icon';
+  favicon.href = data.icon;
+  document.head.appendChild(favicon)
+}
+
 // 设置背景图
 function setBackground(background: { icon: string; useMask: boolean }) {
-  let bodyStyle = document.body.style;
+  const bodyStyle = document.body.style;
   if (background.useMask) {
     bodyStyle.backgroundImage = 'url("/icons/mask.png"), linear-gradient(45deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("' + background.icon + '")';
     bodyStyle.backgroundSize = '100px 100px, cover, cover'
