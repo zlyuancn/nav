@@ -12,7 +12,7 @@ export interface LocalConfig {
     // 组
     groups: {
         // 展开的组名称
-        activeNames: string[],
+        activeNames: number[],
     }
 }
 

@@ -3,7 +3,7 @@ import ThemeModelChange from "./ThemeModelChange.vue"
 import { useConfig } from '@/stores/config'
 import { useSelectTag } from '@/stores/selectTag'
 import { LoadLocalConfig } from '@/client/loadLocalConfig'
-import type { Tag } from "@/client/loadConfig";
+import type { TagsConfig } from "@/client/loadConfig";
 
 const localConfig = LoadLocalConfig()
 
@@ -16,7 +16,7 @@ const allowTagKey = new Map();
 
 init()
 
-function changeTag(tag: Tag) {
+function changeTag(tag: TagsConfig[number]) {
     selectTag.tag = tag
     localConfig.value.tags = { selectTagKey: tag.tagKey }
 }

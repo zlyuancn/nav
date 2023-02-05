@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { LoadLocalConfig } from '@/client/loadLocalConfig';
-import type { SkipType } from '@/client/loadConfig'
+import type { GroupsConfig, SkipType } from '@/client/loadConfig'
 import { useConfig } from '@/stores/config'
 import Tool from './tool.vue'
 import type { ElTable } from 'element-plus';
@@ -12,7 +12,11 @@ const selectTag = useSelectTag();
 const activeNames = ref(localConfig.value?.groups?.activeNames)
 const singleTableRef = ref<InstanceType<typeof ElTable>>() // 选择某个group
 
-const groupTable = ref<Array<{ index: number, title: string }>>([])
+interface ShowGroup {
+    group: GroupsConfig[number],
+    index: number, // 真实数据索引
+}
+const showGroups = ref<ShowGroup[]>([]) // 要显示的组列表
 
 // group 展开变更时
 watch(activeNames, (newStage) => {
@@ -30,20 +34,45 @@ function init() {
             if (v?.tools == undefined || (v.tools).length == 0) {
                 return
             } else {
-                activeNames.value.push(index.toString())
+                activeNames.value.push(index)
             }
         })
     }
-    // groupTable
-    if (config?.groups && Object.values(config?.groups).length > 0) {
+
+    putGroups()
+}
+
+// 如果改变了tag, 过滤掉不可用的工具
+selectTag.$subscribe((mutation, state) => {
+    putGroups()
+})
+
+// 放入组
+function putGroups() {
+    showGroups.value = []
+    if (!config?.groups || Object.values(config?.groups).length == 0) {
+        return
+    }
+
+    if (!selectTag.tag.filterInvalid) {
         Object.values(config.groups).map((v, index) => {
-            if (v?.tools == undefined || (v.tools).length == 0) {
-                return
-            } else {
-                groupTable.value.push({ index, title: v.title })
-            }
+            showGroups.value.push({ group: v, index })
         })
+        return
     }
+    Object.values(config.groups).map((v, index) => {
+        if (v?.tools == undefined || (v.tools).length == 0) {
+            return
+        }
+
+        for (let i in v.tools) {
+            let tool = v.tools[i]
+            if (getHref(tool?.skips)) {
+                showGroups.value.push({ group: v, index })
+                return
+            }
+        }
+    })
 }
 
 // 获取跳转连接
@@ -60,15 +89,26 @@ function getHref(skips: Array<SkipType>): SkipType | null {
 const flickerGroup = ref(-1) // 用于闪烁的组
 let lastClickTableTime = 0; // 最后点击table的时间(毫秒)
 // 跳转到组
-function skipGroup(row: { index: number, title: string }, column: any, cell: any, event: any) {
+function skipGroup(row: ShowGroup, column: any, cell: any, event: any) {
+    let index = showGroups.value.indexOf(row);
     // 展开
-    if (activeNames.value.indexOf(row.index.toString()) == -1) {
-        activeNames.value.push(row.index.toString())
+    if (activeNames.value.indexOf(index) == -1) {
+        activeNames.value.push(index)
     }
-    // 跳转
-    document.getElementById('group_' + row.index)?.scrollIntoView()
+
+    // 跳转, 当元素不再页面内时
+    const groupElement = document.getElementById('group_' + index)
+    if (groupElement) {
+        let p = elementPosition(groupElement);
+        let scrollTop = document.documentElement.scrollTop;
+        let clientHeight = document.documentElement.clientHeight;
+        if (p.y < scrollTop || p.y > (scrollTop + clientHeight) - 200) {
+            document.getElementById('group_' + index)?.scrollIntoView()
+        }
+    }
+
     // 闪烁
-    flickerGroup.value = row.index
+    flickerGroup.value = index
     lastClickTableTime = (new Date()).getTime()
     setTimeout(() => {
         if ((new Date()).getTime() - lastClickTableTime >= 600) {
@@ -77,18 +117,11 @@ function skipGroup(row: { index: number, title: string }, column: any, cell: any
     }, 600)
 }
 
-onMounted(() => {
-    // groupTable
-    if (config?.groups && Object.values(config?.groups).length > 0) {
-        singleTableRef.value!.setCurrentRow(groupTable.value[0])
-    }
-})
-
 document.onscroll = scrollGroup
 function scrollGroup() {
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    let scrollTop = document.documentElement.scrollTop;
     scrollTop += 100;
-    var groups = document.getElementsByClassName('group-div');
+    let groups = document.getElementsByClassName('group-div');
     if (!groups) {
         return
     }
@@ -96,19 +129,15 @@ function scrollGroup() {
         let p = elementPosition(group);
         if (scrollTop > p.y) {
             let index: any = group.getAttribute('index');
-            for (let i in groupTable.value) {
-                if (groupTable.value[i].index == index) {
-                    singleTableRef.value!.setCurrentRow(groupTable.value[i])
-                    break
-                }
-            }
-            break;
+            singleTableRef.value!.setCurrentRow(showGroups.value[index])
+            break
         }
     }
 }
 
+// 获取元素坐标
 function elementPosition(obj: any) {
-    var curleft = 0, curtop = 0;
+    let curleft = 0, curtop = 0;
     if (obj.offsetParent) {
         curleft = obj.offsetLeft;
         curtop = obj.offsetTop;
@@ -125,14 +154,14 @@ function elementPosition(obj: any) {
     <el-row :gutter="10" justify="center">
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="16">
             <el-collapse v-model="activeNames">
-                <div v-for="(group, index) in config?.groups" :flicker-group="flickerGroup == index" class="group-div"
+                <div v-for="(group, index) in showGroups" :flicker-group="flickerGroup == index" class="group-div"
                     :index="index">
-                    <el-collapse-item :title="group.title" :name="index" :id="'group_' + index"
-                        :disabled="(group?.tools == undefined) || Object.values(group.tools).length == 0">
+                    <el-collapse-item :title="group.group.title" :name="index" :id="'group_' + index"
+                        :disabled="(group.group?.tools == undefined) || Object.values(group.group.tools).length == 0">
 
                         <ul>
-                            <li v-for="tool in group?.tools">
-                                <Tool :tool="tool" />
+                            <li v-for="tool in group.group?.tools">
+                                <Tool :tool="tool" :getHref="getHref" />
                             </li>
                         </ul>
                     </el-collapse-item>
@@ -141,8 +170,8 @@ function elementPosition(obj: any) {
         </el-col>
     </el-row>
     <div group-fixed>
-        <el-table group highlight-current-row :data="groupTable" @cell-click="skipGroup" ref="singleTableRef">
-            <el-table-column prop="title" label="组" width="180" />
+        <el-table group highlight-current-row :data="showGroups" @cell-click="skipGroup" ref="singleTableRef">
+            <el-table-column prop="group.title" label="组" width="180" />
         </el-table>
     </div>
 </template>

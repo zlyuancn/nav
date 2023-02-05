@@ -6,28 +6,20 @@ const selectTag = useSelectTag();
 
 const props = defineProps<{
     tool: Tool
+    getHref: (skips: Array<SkipType>) => SkipType | null
 }>()
 
-function getHref(skips: Array<SkipType>): SkipType | null {
-    for (let i in skips) {
-        let skip = skips[i]
-        if (skip.tagKey == selectTag.tag?.tagKey) {
-            return skip
-        }
-    }
-    return null
-}
 </script>
 
 <template>
-    <el-tooltip effect="light" :disabled="!props.tool.desc" :content="props.tool.desc">
-        <div :cover-mask="getHref(tool?.skips) == null">
+    <div v-if="!selectTag.tag.filterInvalid || getHref(tool?.skips) != null" :cover-mask="getHref(tool?.skips) == null">
+        <el-tooltip effect="light" :disabled="!tool.desc" :content="tool.desc">
             <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType">
                 <el-image style="width: 128px; height: 128px;" :src="tool.icon || '/icons/tool.ico'" fit="contain" />
                 <strong class="tool-title">{{ tool.title }}</strong>
             </a>
-        </div>
-    </el-tooltip>
+        </el-tooltip>
+    </div>
 </template>
 
 <style>

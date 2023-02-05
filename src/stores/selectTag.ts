@@ -1,6 +1,6 @@
-import type { Tag } from '@/client/loadConfig'
+import type { TagsConfig } from '@/client/loadConfig'
 export const useSelectTag = defineStore('selectTag', {
     state: () => ({
-        tag: {} as Tag, // 选择的 tag
+        tag: {} as TagsConfig[number], // 选择的 tag
     })
 })

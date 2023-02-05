@@ -1,4 +1,4 @@
-import type { MainConfig, TagsConfig, GroupsConfig, Tag } from '@/client/loadConfig'
+import type { MainConfig, TagsConfig, GroupsConfig } from '@/client/loadConfig'
 export const useConfig = defineStore('config', {
     state: () => ({
         main: {} as MainConfig,
