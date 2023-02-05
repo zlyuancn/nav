@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "zlynav",
+    "description": "自定义导航",
+    "version": "0.0.1",
+    "icons": {
+        "128": "icons/logo.png"
+    },
+    "homepage_url": "https://github.com/zlyuancn/nav",
+    "chrome_url_overrides": {
+        "newtab": "index.html",
+        "chrome_style": false
+    },
+    "options_ui": {
+        "page": "index.html#123123",
+        "chrome_style": false
+    }
+}

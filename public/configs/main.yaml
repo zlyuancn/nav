@@ -1,0 +1,24 @@
+
+logo:
+  # 图片uri
+  icon: /icons/logo.png
+  # 图片宽度
+  width: 150px
+  # 图片高度
+  height: 150px
+  # 填充类型, 可选 fill, contain, cover, none, scale-down
+  fit: contain
+
+  # 跳转定义
+  skip: 
+    # 跳转地址
+    skipUri: 
+    # 跳转类型, _self 表示在当前页面打开, _blank 表示在新的页面打开
+    skipType: _self
+
+# 背景图
+background:
+  # 图片uri
+  icon: /icons/background.png
+  # 是否使用蒙版
+  useMask: true

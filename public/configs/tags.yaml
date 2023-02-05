@@ -1,0 +1,14 @@
+# 用于定义有哪些 tag 和 group
+# tag 表示右上角能切换的选项
+# group 表示页面上有哪些工具分类
+
+# 标题
+- title: 跳转地址1
+  # 一个唯一标记, 用于确认跳转时选择哪个跳转项
+  tagKey: key1
+
+- title: 跳转地址2
+  tagKey: key2
+
+- title: 跳转地址3
+  tagKey: key3
