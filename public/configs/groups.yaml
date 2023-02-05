@@ -8,6 +8,8 @@
     - title: xx工具
       # 工具图标url地址
       icon: /icons/tool.ico
+      # 工具提示
+      desc: 工具提示
       # 跳转定义, 可选
       skips:
         # 在tags.yaml中定义的tagKey

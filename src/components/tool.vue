@@ -20,12 +20,14 @@ function getHref(skips: Array<SkipType>): SkipType | null {
 </script>
 
 <template>
-    <div :cover-mask="getHref(tool?.skips) == null">
-        <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType">
-            <el-image style="width: 128px; height: 128px;" :src="tool.icon||'/icons/tool.ico'" fit="contain" />
-            <strong class="tool-title">{{ tool.title }}</strong>
-        </a>
-    </div>
+    <el-tooltip effect="light" :disabled="!props.tool.desc" :content="props.tool.desc">
+        <div :cover-mask="getHref(tool?.skips) == null">
+            <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType">
+                <el-image style="width: 128px; height: 128px;" :src="tool.icon || '/icons/tool.ico'" fit="contain" />
+                <strong class="tool-title">{{ tool.title }}</strong>
+            </a>
+        </div>
+    </el-tooltip>
 </template>
 
 <style>

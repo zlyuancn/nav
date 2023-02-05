@@ -67,7 +67,9 @@ export interface Tool {
     // 标题
     title: string,
     // 图标
-    icon: string
+    icon: string,
+    // 描述
+    desc: string,
     // 跳转类型
     skips: Array<SkipType>
 }

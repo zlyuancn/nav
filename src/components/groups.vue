@@ -124,7 +124,7 @@ function elementPosition(obj: any) {
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="16">
             <el-collapse v-model="activeNames">
                 <div v-for="(group, index) in config?.groups" :flicker-group="flickerGroup == index" class="group-div"
-                    :title="group.title" :index="index">
+                    :index="index">
                     <el-collapse-item :title="group.title" :name="index" :id="'group_' + index"
                         :disabled="(group?.tools == undefined) || Object.values(group.tools).length == 0">
 
