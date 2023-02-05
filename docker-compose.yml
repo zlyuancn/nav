@@ -4,5 +4,5 @@ services:
     image: zlyuan/nav
     ports:
       - "8080:8080"
-    volumes:
-      - ./dist/configs:/app/dist/configs
+    # volumes:
+      # - ./configs:/app/dist/configs
