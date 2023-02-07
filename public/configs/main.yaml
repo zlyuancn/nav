@@ -28,3 +28,8 @@ background:
   icon: /icons/background.png
   # 是否使用蒙版
   useMask: true
+
+# 配置文件
+configFile:
+  tags: configs/tags.yaml
+  groups: configs/groups.yaml

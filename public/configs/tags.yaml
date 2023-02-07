@@ -3,9 +3,9 @@
 # group 表示页面上有哪些工具分类
 
 # 标题
-- title: 跳转地址1
+- title: 网站
   # 一个唯一标记, 用于确认跳转时选择哪个跳转项
-  tagKey: key1
+  tagKey: domain
   # 当工具不可用时, 过滤掉该工具和组
   filterInvalid: true
 

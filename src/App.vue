@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useConfig } from './stores/config'
-import { loadMainConfig, loadTagsConfig, loadGroupsConfig, type MainConfig } from './client/loadConfig'
+import { loadMainConfig, loadTagsConfig, loadGroupsConfig } from './client/loadConfig'
 import { LoadLocalConfig } from './client/loadLocalConfig'
 import Tags from "./components/Tags.vue"
 import Logo from "./components/Logo.vue"
@@ -15,18 +15,20 @@ const config = useConfig();
 initConfig()
 
 // 初始化配置
-function initConfig() {
+async function initConfig() {
   // 本地配置
   let localConfig = LoadLocalConfig()
   if (localConfig.value.background) {
     setBackground(localConfig.value.background)
   }
+
+  const main = await loadMainConfig()
+
   // 远程配置
   Promise.all([
-    loadMainConfig(),
-    loadTagsConfig(),
-    loadGroupsConfig(),
-  ]).then(([main, tags, groups]) => {
+    loadTagsConfig(main.configFile.tags),
+    loadGroupsConfig(main.configFile.groups),
+  ]).then(([tags, groups]) => {
     config.$patch({
       main: main,
       tags: tags,

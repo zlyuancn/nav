@@ -31,6 +31,11 @@ export interface MainConfig {
         // 是否使用蒙版
         useMask: boolean,
     }
+    // 配置文件
+    configFile: {
+        tags: string,
+        groups: string
+    }
 }
 
 export async function loadMainConfig(): Promise<MainConfig> {
@@ -49,9 +54,9 @@ export type TagsConfig = Array<{
     filterInvalid: boolean
 }>
 
-export async function loadTagsConfig(): Promise<TagsConfig> {
+export async function loadTagsConfig(path = 'configs/tags.yaml'): Promise<TagsConfig> {
     let a: TagsConfig = Object.create({});
-    await loadConfigData('configs/tags.yaml', { encodeType: EncodeType.YAML, writeTarget: a });
+    await loadConfigData(path, { encodeType: EncodeType.YAML, writeTarget: a });
     return a
 }
 
@@ -82,8 +87,8 @@ export type GroupsConfig = Array<{
     tools: Array<Tool>
 }>
 
-export async function loadGroupsConfig(): Promise<GroupsConfig> {
+export async function loadGroupsConfig(path = 'configs/groups.yaml'): Promise<GroupsConfig> {
     let a: GroupsConfig = Object.create({});
-    await loadConfigData('configs/groups.yaml', { encodeType: EncodeType.YAML, writeTarget: a });
+    await loadConfigData(path, { encodeType: EncodeType.YAML, writeTarget: a });
     return a
 }
