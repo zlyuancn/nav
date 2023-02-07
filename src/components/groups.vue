@@ -5,6 +5,7 @@ import { useConfig } from '@/stores/config'
 import Tool from './tool.vue'
 import type { ElTable } from 'element-plus';
 import { useSelectTag } from '@/stores/selectTag'
+import SearchTool from './SearchTool.vue';
 
 const localConfig = LoadLocalConfig()
 const config = useConfig();
@@ -90,6 +91,9 @@ const flickerGroup = ref(-1) // 用于闪烁的组
 let lastClickTableTime = 0; // 最后点击table的时间(毫秒)
 // 跳转到组
 function skipGroup(row: ShowGroup, column: any, cell: any, event: any) {
+    _skipGroup(row)
+}
+function _skipGroup(row: ShowGroup) {
     let index = showGroups.value.indexOf(row);
     // 展开
     if (activeNames.value.indexOf(index) == -1) {
@@ -103,7 +107,10 @@ function skipGroup(row: ShowGroup, column: any, cell: any, event: any) {
         let scrollTop = document.documentElement.scrollTop;
         let clientHeight = document.documentElement.clientHeight;
         if (p.y < scrollTop || p.y > (scrollTop + clientHeight) - 200) {
-            document.getElementById('group_' + index)?.scrollIntoView()
+            window.scrollTo({
+                top: p.y - 150,
+                behavior: "smooth"
+            });
         }
     }
 
@@ -152,6 +159,12 @@ function elementPosition(obj: any) {
 
 <template>
     <el-row fadeInLeft :gutter="10" justify="center">
+        <div v-if="Object.values(showGroups || []).length > 0">
+            <el-col :span="6" :offset="6">
+                <SearchTool :showGroups="showGroups" @skipGroup="skipGroup" />
+            </el-col>
+            <el-col :span="6" />
+        </div>
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="16">
             <el-collapse v-model="activeNames">
                 <div v-for="(group, index) in showGroups" :flicker-group="flickerGroup == index" class="group-div"
