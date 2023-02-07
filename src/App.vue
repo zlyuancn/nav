@@ -5,6 +5,7 @@ import { LoadLocalConfig } from './client/loadLocalConfig'
 import Tags from "./components/Tags.vue"
 import Logo from "./components/Logo.vue"
 import Groups from "./components/groups.vue"
+import Links from "./components/Links.vue"
 
 // 配置是否加载完成
 const loadOk = ref(false)
@@ -28,11 +29,13 @@ async function initConfig() {
   Promise.all([
     loadTagsConfig(main.configFile.tags),
     loadGroupsConfig(main.configFile.groups),
-  ]).then(([tags, groups]) => {
+    loadGroupsConfig(main.configFile.links),
+  ]).then(([tags, groups, links]) => {
     config.$patch({
       main: main,
       tags: tags,
       groups: groups,
+      links: links,
     })
 
     localConfig.value.background = config.main.background; // 储存背景配置
@@ -81,6 +84,7 @@ function setBackground(background: { icon: string; useMask: boolean }) {
     <Tags />
     <Logo />
     <Groups />
+    <Links />
   </div>
 </template>
 

@@ -34,7 +34,8 @@ export interface MainConfig {
     // 配置文件
     configFile: {
         tags: string,
-        groups: string
+        groups: string,
+        links: string,
     }
 }
 
@@ -91,6 +92,21 @@ export type GroupsConfig = Array<{
 
 export async function loadGroupsConfig(path = 'configs/groups.yaml'): Promise<GroupsConfig> {
     let a: GroupsConfig = Object.create({});
+    await loadConfigData(path, { encodeType: EncodeType.YAML, writeTarget: a });
+    return a
+}
+
+export type Links = Array<{
+    // 标题
+    title: string;
+    // 描述
+    desc: string,
+    // 跳转类型
+    skips: Array<SkipType>
+}>
+
+export async function loadLinksConfig(path = 'configs/links.yaml'): Promise<Links> {
+    let a: Links = Object.create({});
     await loadConfigData(path, { encodeType: EncodeType.YAML, writeTarget: a });
     return a
 }

@@ -33,3 +33,4 @@ background:
 configFile:
   tags: configs/tags.yaml
   groups: configs/groups.yaml
+  links: configs/links.yaml
