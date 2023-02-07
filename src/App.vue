@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useConfig } from './stores/config'
-import { loadMainConfig, loadTagsConfig, loadGroupsConfig } from './client/loadConfig'
+import { loadMainConfig, loadTagsConfig, loadGroupsConfig, } from './client/loadConfig'
 import { LoadLocalConfig } from './client/loadLocalConfig'
 import Tags from "./components/Tags.vue"
 import Logo from "./components/Logo.vue"

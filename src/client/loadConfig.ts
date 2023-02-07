@@ -83,6 +83,8 @@ export interface Tool {
 export type GroupsConfig = Array<{
     // 显示文本
     title: string;
+    // 工具显示大小, 可选 large(默认), default, small
+    toolSize: string;
     // 工具列表
     tools: Array<Tool>
 }>

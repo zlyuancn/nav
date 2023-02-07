@@ -161,7 +161,7 @@ function elementPosition(obj: any) {
 
                         <ul>
                             <li v-for="tool in group.group?.tools">
-                                <Tool :tool="tool" :getHref="getHref" />
+                                <Tool :tool="tool" :getHref="getHref" :size="group.group.toolSize||'large'" />
                             </li>
                         </ul>
                     </el-collapse-item>

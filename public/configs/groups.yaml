@@ -2,10 +2,12 @@
 
 - # 组名
   title: 显示文本
-  # 工具
+  # 工具显示大小, 可选 large(默认), default, small
+  toolSize: large
+  # 工具列表
   tools:
     # 工具标题
-    - title: xx工具
+    - title: xx工具xx工具xx工具xx工具xx工具xx工具xx工具
       # 工具图标url地址
       icon: /icons/tool.ico
       # 工具提示
@@ -23,8 +25,9 @@
       icon: /icons/tool.ico
 
 - title: 组2
+  toolSize: default
   tools:
-    - title: xx工具
+    - title: xx工具xx工具xx工具xx工具xx工具xx工具xx工具
       icon: /icons/tool.ico
       skips:
         - tagKey: domain
@@ -35,7 +38,16 @@
           skipType: _blank
 
 - title: 组3
+  toolSize: small
   tools:
+    - title: xx工具xx工具xx工具xx工具xx工具xx工具xx工具
+      icon: /icons/tool.ico
+      skips:
+        - tagKey: domain
+          skipUri: https://www.github.com
+          skipType: _blank
+    - title: xx工具
+      icon: /icons/tool.ico
 
 - title: 组4
   tools:

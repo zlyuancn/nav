@@ -7,10 +7,12 @@
   # 一个唯一标记, 用于确认跳转时选择哪个跳转项
   tagKey: domain
   # 当工具不可用时, 过滤掉该工具和组
-  filterInvalid: true
+  #filterInvalid: false
 
 - title: 跳转地址2
   tagKey: key2
+  # 当工具不可用时, 过滤掉该工具和组
+  filterInvalid: true
 
 - title: 跳转地址3
   tagKey: key3
