@@ -81,15 +81,15 @@ function setBackground(background: { icon: string; useMask: boolean }) {
 <template>
   <div v-loading.fullscreen.lock="!loadOk" element-loading-background="rgba(41, 41, 41, 0.5)" />
   <div class='content' v-if="loadOk">
-    <Tags />
-    <Logo />
+    <Tags fadeInLeft/>
+    <Logo fadeInLeft/>
     <Groups />
-    <Links />
+    <Links fadeInLeft/>
   </div>
 </template>
 
 <style>
-div.content {
+[fadeInLeft] {
   animation-name: fadeInLeft;
   animation-duration: 1s;
 }

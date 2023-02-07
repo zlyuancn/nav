@@ -151,7 +151,7 @@ function elementPosition(obj: any) {
 </script>
 
 <template>
-    <el-row :gutter="10" justify="center">
+    <el-row fadeInLeft :gutter="10" justify="center">
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="16">
             <el-collapse v-model="activeNames">
                 <div v-for="(group, index) in showGroups" :flicker-group="flickerGroup == index" class="group-div"
@@ -161,7 +161,7 @@ function elementPosition(obj: any) {
 
                         <ul>
                             <li v-for="tool in group.group?.tools">
-                                <Tool :tool="tool" :getHref="getHref" :size="group.group.toolSize||'large'" />
+                                <Tool :tool="tool" :getHref="getHref" :size="group.group.toolSize || 'large'" />
                             </li>
                         </ul>
                     </el-collapse-item>
@@ -169,7 +169,7 @@ function elementPosition(obj: any) {
             </el-collapse>
         </el-col>
     </el-row>
-    <div group-table>
+    <div group-table fadeInLeft>
         <el-table group highlight-current-row :data="showGroups" @cell-click="skipGroup" ref="singleTableRef">
             <el-table-column prop="group.title" label="组" width="180" />
         </el-table>
