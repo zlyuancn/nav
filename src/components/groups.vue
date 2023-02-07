@@ -169,7 +169,7 @@ function elementPosition(obj: any) {
             </el-collapse>
         </el-col>
     </el-row>
-    <div group-fixed>
+    <div group-table>
         <el-table group highlight-current-row :data="showGroups" @cell-click="skipGroup" ref="singleTableRef">
             <el-table-column prop="group.title" label="组" width="180" />
         </el-table>
@@ -178,7 +178,7 @@ function elementPosition(obj: any) {
 
 <style>
 /* 固定在左边 */
-div[group-fixed] {
+div[group-table] {
     position: fixed;
     top: 100px;
     left: 50px;
@@ -220,7 +220,7 @@ html.dark .el-table[group] {
 }
 
 /* tool矩形控制 */
-ul li {
+div.group-div li {
     list-style-type: none;
     float: left;
     margin: 10px 10px 15px 25px;

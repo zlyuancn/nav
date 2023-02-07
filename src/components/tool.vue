@@ -13,10 +13,10 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div v-if="!selectTag.tag.filterInvalid || getHref(tool?.skips) != null" :cover-mask="getHref(tool?.skips) == null">
+    <div v-if="!selectTag.tag.filterInvalid || getHref(tool?.skips) != null" :forbidden="getHref(tool?.skips) == null">
         <el-tooltip effect="light" :disabled="!tool.desc" :content="tool.desc">
             <div Tool :size="size">
-                <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType">
+                <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType || '_self'">
                     <el-image :src="tool.icon || '/icons/tool.ico'" fit="contain" />
                     <div class="tool-title"><strong>{{ tool.title }}</strong></div>
                 </a>
@@ -82,22 +82,15 @@ div.tool-title {
     line-height: 32px;
     display: block;
     font-size: 14px;
-    color: #f1f1f1;
-    text-shadow: 0 0 6px #2f2f2f;
-    font-family: MyriadSetPro-Thin;
+    color: #2f2f2f;
+    text-shadow: 0 0 12px #f1f1f1;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 html.dark .tool-title {
-    color: #2f2f2f;
-    text-shadow: 0 0 6px #2f2f2f;
-}
-
-/* 自定义字体 */
-@font-face {
-    font-family: MyriadSetPro-Thin;
-    src: url(/fonts/MyriadSetPro-Thin.ttf)
+    color: #f1f1f1;
+    text-shadow: 0 0 12px #2f2f2f;
 }
 
 /* a去掉下划线 */
@@ -106,18 +99,18 @@ a:-webkit-any-link {
 }
 
 /* 禁用时的光标 */
-div[cover-mask='true'] {
+div[forbidden='true'] {
     cursor: not-allowed;
 }
 
 /* 禁用时图片特效 */
-div[cover-mask='true'] img {
+div[forbidden='true'] img {
     transform: translateY(-128px);
     filter: drop-shadow(#CDD0D6af 0 128px);
 }
 
 /* 动画 */
-div[cover-mask='false'] img:hover {
+div[forbidden='false'] img:hover {
     animation-name: shake;
     animation-duration: 1s;
 }
