@@ -147,4 +147,5 @@ div[forbidden='false'] img:hover {
         transform: rotate(0)
     }
 }
+
 </style>

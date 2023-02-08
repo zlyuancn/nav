@@ -34,7 +34,7 @@ function querySearch(queryString: string, cb: any) {
 }
 
 const handleSelect = (item: RestaurantItem) => {
-  emit('skipGroup', item.group)
+  emit('skipGroup', item.group, item.tool)
   searchState.value = ''
   const input = document.getElementById("search-input");
   input?.blur()
@@ -43,8 +43,8 @@ const handleSelect = (item: RestaurantItem) => {
 
 <template>
   <div search>
-    <el-autocomplete id="search-input" v-model="searchState" :fetch-suggestions="querySearch" clearable class="inline-input w-50"
-      placeholder="输入工具名" @select="handleSelect">
+    <el-autocomplete id="search-input" v-model="searchState" :fetch-suggestions="querySearch" clearable
+      class="inline-input w-50" placeholder="输入工具名" @select="handleSelect">
       <template #default="{ item }">
         <div style="display:inline-block;">{{ item.group?.group?.title }} &nbsp->&nbsp </div>
         <el-image style="width: 16px; height: 16px;" :src="item.tool.icon || '/icons/tool.ico'" fit="contain" />

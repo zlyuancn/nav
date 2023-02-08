@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { LoadLocalConfig } from '@/client/loadLocalConfig';
-import type { GroupsConfig, SkipType } from '@/client/loadConfig'
+import type { GroupsConfig, SkipType, Tool } from '@/client/loadConfig'
 import { useConfig } from '@/stores/config'
-import Tool from './tool.vue'
 import type { ElTable } from 'element-plus';
 import { useSelectTag } from '@/stores/selectTag'
 import SearchTool from './SearchTool.vue';
@@ -88,19 +87,25 @@ function getHref(skips: Array<SkipType>): SkipType | null {
 }
 
 const flickerGroup = ref(-1) // 用于闪烁的组
-let lastClickTableTime = 0; // 最后点击table的时间(毫秒)
+let lastFlickerGroupTime = 0; // 最后闪烁组的时间(毫秒)
+const flickerTool = ref<Tool | null>(null) // 用于闪烁的工具
+let lastFlickerToolTime = 0; // 最后闪烁Tool的时间(毫秒)
+
 // 跳转到组
 function skipGroup(row: ShowGroup, column: any, cell: any, event: any) {
-    _skipGroup(row)
+    _skipGroup(row, null)
 }
-function _skipGroup(row: ShowGroup) {
+function _skipGroup(row: ShowGroup, tool: Tool | null) {
     let index = showGroups.value.indexOf(row);
-    // 展开
+    let wait = false;
+
+    // 展开group
     if (activeNames.value.indexOf(index) == -1) {
         activeNames.value.push(index)
+        wait = true
     }
 
-    // 跳转, 当元素不再页面内时
+    // 跳转group, 当元素不再页面内时
     const groupElement = document.getElementById('group_' + index)
     if (groupElement) {
         let p = elementPosition(groupElement);
@@ -111,17 +116,40 @@ function _skipGroup(row: ShowGroup) {
                 top: p.y - 150,
                 behavior: "smooth"
             });
+            wait = true
         }
     }
 
-    // 闪烁
-    flickerGroup.value = index
-    lastClickTableTime = (new Date()).getTime()
+    if (!wait) {
+        flicker(index, tool);
+        return
+    }
+
     setTimeout(() => {
-        if ((new Date()).getTime() - lastClickTableTime >= 600) {
-            flickerGroup.value = -1
+        flicker(index, tool);
+    }, 350)
+
+    function flicker(groupIndex: number, tool: Tool | null) {
+        if (tool) {
+            flickerTool.value = tool;
+            lastFlickerToolTime = (new Date()).getTime()
+            setTimeout(() => {
+                if ((new Date()).getTime() - lastFlickerToolTime >= 600) {
+                    flickerTool.value = null
+                }
+            }, 600)
+            return
         }
-    }, 600)
+
+        // 闪烁group
+        flickerGroup.value = groupIndex
+        lastFlickerGroupTime = (new Date()).getTime()
+        setTimeout(() => {
+            if ((new Date()).getTime() - lastFlickerGroupTime >= 600) {
+                flickerGroup.value = -1
+            }
+        }, 600)
+    }
 }
 
 document.onscroll = scrollGroup
@@ -161,7 +189,7 @@ function elementPosition(obj: any) {
     <el-row fadeInLeft :gutter="10" justify="center">
         <div v-if="Object.values(showGroups || []).length > 0">
             <el-col :span="8" :offset="8">
-                <SearchTool :showGroups="showGroups" @skipGroup="skipGroup" />
+                <SearchTool :showGroups="showGroups" @skipGroup="_skipGroup" />
             </el-col>
             <el-col :span="8" />
         </div>
@@ -176,7 +204,9 @@ function elementPosition(obj: any) {
 
                         <ul>
                             <li v-for="tool in group.group?.tools">
-                                <Tool :tool="tool" :getHref="getHref" :size="group.group.toolSize || 'large'" />
+                                <div :flicker-tool="flickerTool == tool">
+                                    <Tool :tool="tool" :getHref="getHref" :size="group.group.toolSize || 'large'" />
+                                </div>
                             </li>
                         </ul>
                     </el-collapse-item>
@@ -243,6 +273,12 @@ div.group-div li {
 
 /* 跳转group时闪烁 */
 div[flicker-group='true'] {
+    animation: flicker 0.15s infinite alternate;
+    animation-iteration-count: 4;
+}
+
+/* 跳转tool时闪烁 */
+div[flicker-tool='true'] {
     animation: flicker 0.15s infinite alternate;
     animation-iteration-count: 4;
 }
