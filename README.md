@@ -38,5 +38,6 @@ clone 本项目 `git clone --depth=1 https://github.com/zlyuancn/nav.git && cd n
 + [tags.yaml](./public/configs/tags.yaml) 用于配置右上角的标签组, 它控制点击工具时的跳转形式
 + [groups.yaml](./public/configs/groups.yaml) 用于配置工具组和其工具列表
 + [main.yaml](./public/configs/main.yaml) 用于配置 logo 和背景图等
++ [links.yaml](./public/configs/links.yaml) 用于配置右下角的链接
 
 

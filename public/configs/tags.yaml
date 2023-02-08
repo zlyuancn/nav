@@ -6,7 +6,7 @@
 - title: 网站
   # 一个唯一标记, 用于确认跳转时选择哪个跳转项
   tagKey: domain
-  # 当工具不可用时, 过滤掉该工具和组
+  # 当没有改类型的跳转时会屏蔽工具或组等
   #filterInvalid: false
 
 - title: 跳转地址2
