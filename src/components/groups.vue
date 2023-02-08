@@ -160,11 +160,13 @@ function elementPosition(obj: any) {
 <template>
     <el-row fadeInLeft :gutter="10" justify="center">
         <div v-if="Object.values(showGroups || []).length > 0">
-            <el-col :span="6" :offset="6">
+            <el-col :span="8" :offset="8">
                 <SearchTool :showGroups="showGroups" @skipGroup="skipGroup" />
             </el-col>
-            <el-col :span="6" />
+            <el-col :span="8" />
         </div>
+    </el-row>
+    <el-row fadeInLeft :gutter="10" justify="center">
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="16">
             <el-collapse v-model="activeNames">
                 <div v-for="(group, index) in showGroups" :flicker-group="flickerGroup == index" class="group-div"
