@@ -1,10 +1,12 @@
-<script setup lang="ts">import type { GroupsConfig, Tool } from '@/client/loadConfig';
+<script setup lang="ts">
+import type { GroupsConfig, SkipType, Tool } from '@/client/loadConfig';
 interface ShowGroup {
   group: GroupsConfig[number],
-  index: number, // 真实数据索引
+  tools: Array<Tool>
 }
 const props = defineProps<{
-  showGroups: ShowGroup[]
+  showGroups: ShowGroup[],
+  getHref: (skips: Array<SkipType>) => SkipType | null
 }>()
 const emit = defineEmits(['skipGroup'])
 
@@ -19,7 +21,7 @@ interface RestaurantItem {
 function querySearch(queryString: string, cb: any) {
   let data: RestaurantItem[] = [];
   (props.showGroups || []).map((g) => {
-    (g?.group?.tools || []).map((t) => {
+    (g?.tools || []).map((t) => {
       if (!queryString || t.title.indexOf(queryString) > -1) {
         data.push({
           value: t.title,
@@ -46,9 +48,12 @@ const handleSelect = (item: RestaurantItem) => {
     <el-autocomplete id="search-input" v-model="searchState" :fetch-suggestions="querySearch" clearable
       class="inline-input w-50" placeholder="输入工具名" @select="handleSelect">
       <template #default="{ item }">
-        <div style="display:inline-block;">{{ item.group?.group?.title }} &nbsp->&nbsp </div>
-        <el-image style="width: 16px; height: 16px;" :src="item.tool.icon || '/icons/tool.ico'" fit="contain" />
-        <div style="display:inline-block;">&nbsp{{ item.tool.title }}</div>
+        <div search style="padding: 0;">
+          <div style="display:inline-block;">{{ item.group?.group?.title }} &nbsp->&nbsp </div>
+          <el-image :forbidden="getHref(item?.tool?.skips) == null" style="width: 16px; height: 16px;"
+            :src="item.tool.icon || '/icons/tool.ico'" fit="contain" />
+          <div style="display:inline-block;">&nbsp{{ item.tool.title }}</div>
+        </div>
       </template>
     </el-autocomplete>
   </div>
@@ -61,5 +66,11 @@ div[search] {
 
 div[search] input {
   width: 500px;
+}
+
+/* 禁用时图片特效 */
+div[search] img[forbidden='true'] {
+  transform: translateY(-128px);
+  filter: drop-shadow(#CDD0D6af 0 128px);
 }
 </style>

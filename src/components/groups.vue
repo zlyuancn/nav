@@ -14,7 +14,7 @@ const singleTableRef = ref<InstanceType<typeof ElTable>>() // 选择某个group
 
 interface ShowGroup {
     group: GroupsConfig[number],
-    index: number, // 真实数据索引
+    tools: Array<Tool>
 }
 const showGroups = ref<ShowGroup[]>([]) // 要显示的组列表
 
@@ -56,7 +56,7 @@ function filterGroups() {
 
     if (!selectTag.tag.filterInvalid) {
         Object.values(config.groups).map((v, index) => {
-            showGroups.value.push({ group: v, index })
+            showGroups.value.push({ group: v, tools: v.tools })
         })
         return
     }
@@ -65,13 +65,21 @@ function filterGroups() {
             return
         }
 
-        for (let i in v.tools) {
-            let tool = v.tools[i]
+        const g: ShowGroup = {
+            group: v,
+            tools: [],
+        }
+
+        for (let tool of v.tools) {
             if (getHref(tool?.skips)) {
-                showGroups.value.push({ group: v, index })
-                return
+                g.tools.push(tool)
             }
         }
+
+        if (Object.values(g.tools || []).length > 0){
+            showGroups.value.push(g)
+        }
+
     })
 }
 
@@ -79,7 +87,7 @@ function filterGroups() {
 function getHref(skips: Array<SkipType>): SkipType | null {
     for (let i in skips) {
         let skip = skips[i]
-        if (!skip.skipUri){
+        if (!skip.skipUri) {
             continue
         }
         if (skip.tagKey == '*' || skip.tagKey == selectTag.tag?.tagKey) {
@@ -192,7 +200,7 @@ function elementPosition(obj: any) {
     <el-row fadeInLeft :gutter="10" justify="center">
         <div v-if="Object.values(showGroups || []).length > 0">
             <el-col :span="8" :offset="8">
-                <SearchTool :showGroups="showGroups" @skipGroup="_skipGroup" />
+                <SearchTool :showGroups="showGroups" :getHref="getHref" @skipGroup="_skipGroup" />
             </el-col>
             <el-col :span="8" />
         </div>
@@ -200,15 +208,14 @@ function elementPosition(obj: any) {
     <el-row fadeInLeft :gutter="10" justify="center">
         <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="16">
             <el-collapse v-model="activeNames">
-                <div v-for="(group, index) in showGroups" :flicker-group="flickerGroup == index" class="group-div"
+                <div v-for="(showGroup, index) in showGroups" :flicker-group="flickerGroup == index" class="group-div"
                     :index="index">
-                    <el-collapse-item :title="group.group.title" :name="index" :id="'group_' + index"
-                        :disabled="(group.group?.tools == undefined) || Object.values(group.group.tools).length == 0">
-
-                        <ul v-for="tool in group.group?.tools">
-                            <li  v-if="!selectTag.tag.filterInvalid || getHref(tool?.skips) != null">
+                    <el-collapse-item :title="showGroup.group.title" :name="index" :id="'group_' + index"
+                        :disabled="Object.values(showGroup?.tools || []).length==0">
+                        <ul v-for="tool in showGroup?.tools">
+                            <li>
                                 <div :flicker-tool="flickerTool == tool">
-                                    <Tool :tool="tool" :getHref="getHref" :size="group.group.toolSize || 'large'" />
+                                    <Tool :tool="tool" :getHref="getHref" :size="showGroup.group.toolSize || 'large'" />
                                 </div>
                             </li>
                         </ul>
