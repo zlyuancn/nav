@@ -27,7 +27,8 @@ const props = defineProps<{
 
 <style>
 div[Tool] {
-    --large: 128px;
+    --big: 128px;
+    --large: 96px;
     --default: 72px;
     --small: 36px;
 }
@@ -36,31 +37,35 @@ div[Tool] a {
     width: 100px;
 }
 
+div[Tool][size='big'] {
+    overflow: hidden;
+    width: var(--big);
+}
 div[Tool][size='large'] {
     overflow: hidden;
     width: var(--large);
 }
-
 div[Tool][size="default"] {
     width: var(--default);
 }
-
 div[Tool][size="small"] {
     width: var(--large);
     height: var(--small);
     vertical-align: middle
 }
 
+div[size='big'] div.el-image img {
+    width: var(--big);
+    height: var(--big)
+}
 div[size='large'] div.el-image img {
     width: var(--large);
     height: var(--large)
 }
-
 div[size='default'] div.el-image img {
     width: var(--default);
     height: var(--default)
 }
-
 div[size='small'] div.el-image img {
     width: var(--small);
     height: var(--small)

@@ -2,8 +2,8 @@
 
 - # 组名
   title: 显示文本
-  # 工具显示大小, 可选 large(默认), default, small
-  toolSize: large
+  # 工具显示大小, 可选 big, large(默认), default, small
+  toolSize: big
   # 工具列表
   tools:
     # 工具标题
@@ -29,7 +29,7 @@
       icon: /icons/tool.ico
 
 - title: 组2
-  toolSize: default
+  toolSize: large
   tools:
     - title: xx工具xx工具xx工具xx工具xx工具xx工具xx工具
       icon: /icons/tool.ico
@@ -40,9 +40,10 @@
         - tagKey: key2
           skipUri: https://www.baidu.com
           skipType: _blank
+    - title: xx工具
 
 - title: 组3
-  toolSize: small
+  toolSize: default
   tools:
     - title: xx工具xx工具xx工具xx工具xx工具xx工具xx工具
       icon: /icons/tool.ico
@@ -54,6 +55,7 @@
       icon: /icons/tool.ico
 
 - title: 组4
+  toolSize: small
   tools:
     - title: xx工具
       icon: /icons/tool.ico
