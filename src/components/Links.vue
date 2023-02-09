@@ -10,7 +10,10 @@ const selectTag = useSelectTag();
 function getHref(skips: Array<SkipType>): SkipType | null {
     for (let i in skips) {
         let skip = skips[i]
-        if (skip.tagKey == selectTag.tag?.tagKey) {
+        if (!skip.skipUri){
+            continue
+        }
+        if (skip.tagKey == '*' || skip.tagKey == selectTag.tag?.tagKey) {
             return skip
         }
     }

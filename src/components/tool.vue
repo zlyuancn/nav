@@ -13,7 +13,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div v-if="!selectTag.tag.filterInvalid || getHref(tool?.skips) != null" :forbidden="getHref(tool?.skips) == null">
+    <div :forbidden="getHref(tool?.skips) == null">
         <el-tooltip effect="light" :disabled="!tool.desc" :content="tool.desc">
             <div Tool :size="size">
                 <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType || '_self'">
@@ -67,11 +67,13 @@ div[size='small'] div.el-image img {
 }
 
 div[size='small'] div.tool-title {
-    position: absolute;
-    display: inline;
-    width: 96px;
-    height: var(--small);
+    position: relative;
+    top: -40px;
+    left: var(--small);
+    width: 128px;
+    height: 30px;
     text-align: left;
+    overflow: hidden;
 }
 
 /* tool文字高光 */
@@ -85,7 +87,6 @@ div.tool-title {
     color: #2f2f2f;
     text-shadow: 0 0 12px #f1f1f1;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 html.dark .tool-title {

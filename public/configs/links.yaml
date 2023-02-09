@@ -6,8 +6,8 @@
   desc: 链接描述
   # 跳转定义, 可选
   skips:
-    # 在tags.yaml中定义的tagKey
-    - tagKey: domain
+    # 在tags.yaml中定义的tagKey, * 表示任意
+    - tagKey: '*'
       # 跳转地址
       skipUri: https://www.github.com
       # 跳转类型, _self 表示在当前页面打开(默认), _blank 表示在新的页面打开
@@ -17,8 +17,6 @@
   desc: 链接描述
   skips:
     - tagKey: domain
-      skipUri: https://www.baidu.com
-    - tagKey: key2
       skipUri: https://www.baidu.com
 
 - title: invalid

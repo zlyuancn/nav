@@ -39,16 +39,16 @@ function init() {
         })
     }
 
-    putGroups()
+    filterGroups()
 }
 
 // 如果改变了tag, 过滤掉不可用的工具
 selectTag.$subscribe((mutation, state) => {
-    putGroups()
+    filterGroups()
 })
 
-// 放入组
-function putGroups() {
+// 过滤组
+function filterGroups() {
     showGroups.value = []
     if (!config?.groups || Object.values(config?.groups).length == 0) {
         return
@@ -79,7 +79,10 @@ function putGroups() {
 function getHref(skips: Array<SkipType>): SkipType | null {
     for (let i in skips) {
         let skip = skips[i]
-        if (skip.tagKey == selectTag.tag?.tagKey) {
+        if (!skip.skipUri){
+            continue
+        }
+        if (skip.tagKey == '*' || skip.tagKey == selectTag.tag?.tagKey) {
             return skip
         }
     }
@@ -202,8 +205,8 @@ function elementPosition(obj: any) {
                     <el-collapse-item :title="group.group.title" :name="index" :id="'group_' + index"
                         :disabled="(group.group?.tools == undefined) || Object.values(group.group.tools).length == 0">
 
-                        <ul>
-                            <li v-for="tool in group.group?.tools">
+                        <ul v-for="tool in group.group?.tools">
+                            <li  v-if="!selectTag.tag.filterInvalid || getHref(tool?.skips) != null">
                                 <div :flicker-tool="flickerTool == tool">
                                     <Tool :tool="tool" :getHref="getHref" :size="group.group.toolSize || 'large'" />
                                 </div>
