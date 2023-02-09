@@ -18,11 +18,20 @@ interface RestaurantItem {
   tool: Tool
 }
 
+function searchKeywords(queryString: string, words: string[]): boolean {
+  for (let word of (words || [])){
+    if (word.indexOf(queryString)==0){
+      return true
+    }
+  }
+  return false
+}
+
 function querySearch(queryString: string, cb: any) {
   let data: RestaurantItem[] = [];
   (props.showGroups || []).map((g) => {
     (g?.tools || []).map((t) => {
-      if (!queryString || t.title.indexOf(queryString) > -1) {
+      if (!queryString || t.title.indexOf(queryString) > -1 || searchKeywords(queryString, t.searchKeywords)) {
         data.push({
           value: t.title,
           group: g,

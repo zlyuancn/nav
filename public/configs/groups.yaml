@@ -12,6 +12,10 @@
       icon: /icons/tool.ico
       # 工具提示
       desc: 工具提示
+      # 搜索关键词, 前缀匹配
+      searchKeywords:
+        - 百度
+        - baidu
       # 跳转定义, 可选
       skips:
         # 在tags.yaml中定义的tagKey, * 表示任意

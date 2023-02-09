@@ -78,6 +78,8 @@ export interface Tool {
     icon: string,
     // 描述
     desc: string,
+    // 搜索关键词, 前缀匹配
+    searchKeywords: string[],
     // 跳转类型
     skips: Array<SkipType>
 }
