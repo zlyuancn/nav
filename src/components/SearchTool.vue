@@ -19,8 +19,8 @@ interface RestaurantItem {
 }
 
 function searchKeywords(queryString: string, words: string[]): boolean {
-  for (let word of (words || [])){
-    if (word.indexOf(queryString)==0){
+  for (let word of (words || [])) {
+    if (word.indexOf(queryString) == 0) {
       return true
     }
   }
@@ -31,7 +31,12 @@ function querySearch(queryString: string, cb: any) {
   let data: RestaurantItem[] = [];
   (props.showGroups || []).map((g) => {
     (g?.tools || []).map((t) => {
-      if (!queryString || t.title.indexOf(queryString) > -1 || searchKeywords(queryString, t.searchKeywords)) {
+      console.info(t.desc)
+      if (!queryString ||
+        t.title.indexOf(queryString) > -1 ||
+        searchKeywords(queryString, t.searchKeywords) ||
+        t.desc?.indexOf(queryString) > -1
+        ) {
         data.push({
           value: t.title,
           group: g,
