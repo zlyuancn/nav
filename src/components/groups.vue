@@ -5,11 +5,12 @@ import { useConfig } from '@/stores/config'
 import type { ElTable } from 'element-plus';
 import { useSelectTag } from '@/stores/selectTag'
 import SearchTool from './SearchTool.vue';
+import { map } from 'lodash';
 
 const localConfig = LoadLocalConfig()
 const config = useConfig();
 const selectTag = useSelectTag();
-const activeNames = ref(localConfig.value?.groups?.activeNames)
+const activeNames = ref<number[]>([])
 const singleTableRef = ref<InstanceType<typeof ElTable>>() // 选择某个group
 
 interface ShowGroup {
@@ -18,34 +19,52 @@ interface ShowGroup {
 }
 const showGroups = ref<ShowGroup[]>([]) // 要显示的组列表
 
+
 // group 展开变更时
 watch(activeNames, (newStage) => {
-    localConfig.value.groups = { activeNames: newStage }
+    let key = selectTag.tag.tagKey;
+    if (!localConfig.value.groups?.activeNames) {
+        localConfig.value.groups = { activeNames: {} }
+    }
+    const temp: any = {};
+    Object.assign(temp, localConfig.value.groups.activeNames)
+    temp[key] = newStage
+    localConfig.value.groups.activeNames = temp
 })
 
 init()
 
 // 数据加载完成时
 function init() {
-    // 展开
-    if (!activeNames.value && config?.groups && Object.values(config?.groups).length > 0) {
-        activeNames.value = []
-        Object.values(config.groups).map((v, index) => {
-            if (v?.tools == undefined || (v.tools).length == 0) {
-                return
-            } else {
-                activeNames.value.push(index)
-            }
-        })
-    }
-
     filterGroups()
+    doGroupUnfold(localConfig.value.tags.selectTagKey)
 }
 
 // 如果改变了tag, 过滤掉不可用的工具
 selectTag.$subscribe((mutation, state) => {
+    console.info('xxx')
     filterGroups()
+    doGroupUnfold(state.tag.tagKey)
 })
+
+// 让group展开
+function doGroupUnfold(key: string) {
+    // 展开
+    if (!activeNames.value && Object.values(showGroups.value || []).length > 0) {
+        const names: number[] = [];
+        Object.values(config.groups).map((v, index) => {
+            if (v?.tools == undefined || (v.tools).length == 0) {
+                return
+            } else {
+                names.push(index)
+            }
+        })
+        activeNames.value = names;
+    } else {
+        let temp = (localConfig.value.groups?.activeNames || {});
+        activeNames.value = temp[key];
+    }
+}
 
 // 过滤组
 function filterGroups() {
@@ -76,7 +95,7 @@ function filterGroups() {
             }
         }
 
-        if (Object.values(g.tools || []).length > 0){
+        if (Object.values(g.tools || []).length > 0) {
             showGroups.value.push(g)
         }
 
@@ -211,7 +230,7 @@ function elementPosition(obj: any) {
                 <div v-for="(showGroup, index) in showGroups" :flicker-group="flickerGroup == index" class="group-div"
                     :index="index">
                     <el-collapse-item :title="showGroup.group.title" :name="index" :id="'group_' + index"
-                        :disabled="Object.values(showGroup?.tools || []).length==0">
+                        :disabled="Object.values(showGroup?.tools || []).length == 0">
                         <ul v-for="tool in showGroup?.tools">
                             <li>
                                 <div :flicker-tool="flickerTool == tool">
