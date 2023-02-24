@@ -14,14 +14,17 @@ const props = defineProps<{
 
 <template>
     <div :forbidden="getHref(tool?.skips) == null">
-        <el-tooltip effect="light" :disabled="!tool.desc" :content="tool.desc">
-            <div Tool :size="size">
-                <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType || '_self'">
+        <div Tool :size="size">
+            <a :href="getHref(tool?.skips)?.skipUri" :target="getHref(tool?.skips)?.skipType || '_self'">
+
+                <el-tooltip effect="light" :disabled="!tool.desc" :content="tool.desc">
                     <el-image :src="tool.icon || '/icons/tool.ico'" fit="contain" />
+                </el-tooltip>
+                <el-tooltip effect="light" :content="tool.title">
                     <div class="tool-title"><strong>{{ tool.title }}</strong></div>
-                </a>
-            </div>
-        </el-tooltip>
+                </el-tooltip>
+            </a>
+        </div>
     </div>
 </template>
 
@@ -41,13 +44,16 @@ div[Tool][size='big'] {
     overflow: hidden;
     width: var(--big);
 }
+
 div[Tool][size='large'] {
     overflow: hidden;
     width: var(--large);
 }
+
 div[Tool][size="default"] {
     width: var(--default);
 }
+
 div[Tool][size="small"] {
     width: var(--large);
     height: var(--small);
@@ -58,14 +64,17 @@ div[size='big'] div.el-image img {
     width: var(--big);
     height: var(--big)
 }
+
 div[size='large'] div.el-image img {
     width: var(--large);
     height: var(--large)
 }
+
 div[size='default'] div.el-image img {
     width: var(--default);
     height: var(--default)
 }
+
 div[size='small'] div.el-image img {
     width: var(--small);
     height: var(--small)
@@ -153,5 +162,4 @@ div[forbidden='false'] img:hover {
         transform: rotate(0)
     }
 }
-
 </style>
