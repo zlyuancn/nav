@@ -37,18 +37,25 @@ init()
 // 数据加载完成时
 function init() {
     filterGroups()
-    doGroupUnfold(localConfig.value.tags.selectTagKey)
+
+    let key = selectTag.tag?.tagKey
+    if (key) {
+        doGroupUnfold(key, true)
+    }
 }
 
 // 如果改变了tag, 过滤掉不可用的工具
 selectTag.$subscribe((mutation, state) => {
-    console.info('xxx')
     filterGroups()
     doGroupUnfold(state.tag.tagKey)
 })
 
 // 让group展开
-function doGroupUnfold(key: string) {
+function doGroupUnfold(key: string, isInit = false) {
+    let temp = (localConfig.value.groups?.activeNames || {});
+    console.info(temp[key])
+    activeNames.value = temp[key];
+
     // 展开
     if (!activeNames.value && Object.values(showGroups.value || []).length > 0) {
         const names: number[] = [];
@@ -60,9 +67,6 @@ function doGroupUnfold(key: string) {
             }
         })
         activeNames.value = names;
-    } else {
-        let temp = (localConfig.value.groups?.activeNames || {});
-        activeNames.value = temp[key];
     }
 }
 
