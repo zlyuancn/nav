@@ -31,12 +31,12 @@ function querySearch(queryString: string, cb: any) {
   let data: RestaurantItem[] = [];
   (props.showGroups || []).map((g) => {
     (g?.tools || []).map((t) => {
-      console.info(t.desc)
       if (!queryString ||
         t.title.indexOf(queryString) > -1 ||
         searchKeywords(queryString, t.searchKeywords) ||
-        t.desc?.indexOf(queryString) > -1
-        ) {
+        t.desc?.indexOf(queryString) > -1 ||
+        g.group.title.indexOf(queryString) > -1
+      ) {
         data.push({
           value: t.title,
           group: g,
