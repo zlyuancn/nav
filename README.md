@@ -17,7 +17,7 @@ clone 本项目 `git clone --depth=1 https://github.com/zlyuancn/nav.git && cd n
 
 调试执行 `npm run dev`
 
-编译 `npm run dist`
+编译 `npm run build`
 
 # 通过 docker 构建
 
