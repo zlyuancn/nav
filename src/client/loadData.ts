@@ -11,6 +11,8 @@ interface LoadOptions {
     writeTarget?: any,
 }
 
+axios.defaults.headers.common['Cache-Control'] = 'no-cache'
+
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
     return response;
