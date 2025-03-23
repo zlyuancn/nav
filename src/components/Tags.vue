@@ -70,7 +70,7 @@ function getAllow(tagKey: string): boolean {
 <template>
     <div tag-fixed>
         <!-- tags切换 -->
-        <el-radio-group size="small" v-model="radio">
+        <el-radio-group :size="config.main?.tags?.size || 'big'" v-model="radio">
             <el-space>
                 <div>
                     <el-radio-button v-for="tag in config.tags" :key="tag.tagKey" @change="changeTag(tag)"
@@ -78,7 +78,7 @@ function getAllow(tagKey: string): boolean {
                 </div>
 
                 <!-- 主题模式切换 -->
-                <ThemeModelChange type="primary" size="small" />
+                <ThemeModelChange type="primary" :size="config.main?.tags?.size || 'big'"/>
 
             </el-space>
         </el-radio-group>

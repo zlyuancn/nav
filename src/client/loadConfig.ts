@@ -31,6 +31,11 @@ export interface MainConfig {
         // 是否使用蒙版
         useMask: boolean,
     }
+    // tags
+    tags: {
+        // 大小, 可选 big, large, default, small(默认)
+        size: string,
+    }
     // 配置文件
     configFile: {
         tags: string,

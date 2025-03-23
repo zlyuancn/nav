@@ -22,6 +22,11 @@ logo:
     # 跳转类型, _self 表示在当前页面打开, _blank 表示在新的页面打开
     skipType: _self
 
+# tags
+tags:
+  # 大小, 可选 big(默认), large, small
+  size: big
+
 # 背景图
 background:
   # 图片uri
